@@ -6,30 +6,33 @@
       <th scope="col">ID</th>
       <th scope="col">Name</th>
       <th scope="col">Email</th>
+      <th scope="col">Avatar</th>
       <!-- TODO: Add a column for an avatar -->
       <th scope="col">Actions</th>
     </tr>
     </thead>
     <tbody>
     <tr>
-      <td>123</td>
-      <td>Added name 1</td>
+      <td>{{employees.id}}</td>
+      <td>{{employees.first_name}} {{employees.last_name}} </td>
       <!-- {{???.first_name}} {{??.last_name}} -->
-      <td>email@email.com</td>
-      <td><button type="button" class="btn btn-danger">Delete</button></td>
+      <td>{{employees.email}}</td>
+      <td>{{employees.avatar}}</td>
+      <td><button (click)="deleteEmployee(employee)" type="button" class="btn btn-danger">Delete</button></td>
     </tr>
     <tr>
       <td>124</td>
       <td>Added name 2</td>
       <td>email2@email.com</td>
-      <td><button type="button" class="btn btn-danger">Delete</button></td>
+      <td><button (click)="deleteEmployee()" type="button" class="btn btn-danger">Delete</button></td>
     </tr>
 
     <tr class="input-row" [formGroup]="form">
       <td><input formControlName="id" type="text" placeholder="ID" class="form-control"></td>
       <td><input formControlName="name" type="text" placeholder="Name" class="form-control"></td>
       <td><input formControlName="email" type="text" placeholder="Email" class="form-control"></td>
-      <td><button type="submit" class="btn btn-success" style="width: 70px">Add</button></td>
+      <td><input formControlName="avatar" type="text" placeholder="Avatar" class="form-control"></td>
+      <td><button (click)="addEmployee()" type="submit" class="btn btn-success" style="width: 70px">Add</button></td>
     </tr>
     </tbody>
   </table>

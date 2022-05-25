@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from './employee.service';
@@ -11,9 +12,13 @@ export class EmployeesComponent implements OnInit {
 
   form: FormGroup;
   employees: any;
+  employee: any;
+  employeesUrl = "https://reqres.in/api/users";
 
   constructor(private employeeService: EmployeeService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private http: HttpClient
+              ) {
   }
 
   ngOnInit() {
@@ -25,10 +30,10 @@ export class EmployeesComponent implements OnInit {
 
   private initForm(): void {
     this.form = this.fb.group({ // TODO: Add validations
-      id: ['', Validators.required, Validators.pattern(/^[0-9]+$/)],
+      id: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z_]+( [a-zA-Z_]+)*$/)]],
-      email: ['', Validators.required, Validators.email],
-      avatar: ['', Validators.required]
+      email: ['', [Validators.required, Validators.email]],
+      avatar: ['', [Validators.required]]
     });
   }
 
@@ -46,7 +51,10 @@ export class EmployeesComponent implements OnInit {
     // TODO: Add an employee to the table this.employees.push()
   }
 
-  deleteEmployee(employee): void {
+  deleteEmployee(employee: { id: any; }): void {
+    const index = this.employees.findIndex((element: { id: any; }) => element.id === employee.id);
+    this.employees.splice(index, 1);
+    this.http.put(this.employeesUrl, this.employees).subscribe();
     // TODO: Delete an employee from the table this.employees.splice()
   }
 }

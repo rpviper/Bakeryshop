@@ -21,6 +21,7 @@ export class ProductsComponent implements OnInit {
     this.initForm();
     this.productService.getProducts().subscribe((products) => {
       this.products = products;  // TODO: Order the products by price / products.sort
+      this.products.sort((a, b) => a.price - b.price )
     });
   }
 
