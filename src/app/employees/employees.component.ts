@@ -10,6 +10,7 @@ import { EmployeeService } from './employee.service';
 })
 export class EmployeesComponent implements OnInit {
 
+ 
   form: FormGroup;
   employees: any;
   employee: any;
@@ -17,8 +18,9 @@ export class EmployeesComponent implements OnInit {
 
   constructor(private employeeService: EmployeeService,
               private fb: FormBuilder,
-              private http: HttpClient
+              private http: HttpClient,
               ) {
+                
   }
 
   ngOnInit() {
@@ -33,21 +35,23 @@ export class EmployeesComponent implements OnInit {
       id: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z_]+( [a-zA-Z_]+)*$/)]],
       email: ['', [Validators.required, Validators.email]],
-      avatar: ['', [Validators.required]]
+      avatar: ['', Validators.required]
     });
   }
 
-  addEmployee(): void {
-    console.log(this.form.value);
 
-    const newEmployee = {
+  addEmployee(): void {
+    console.log(this.form.value)
+      const newEmployee = {
       id: this.form.value.id,
       first_name: this.form.value.name.split(" ")[0],
       last_name: this.form.value.name.split(" ")[1],
       email: this.form.value.email,
       avatar: this.form.value.avatar
     }
+    this.initForm();
     this.employees.push(newEmployee);
+    
     // TODO: Add an employee to the table this.employees.push()
   }
 
@@ -58,3 +62,4 @@ export class EmployeesComponent implements OnInit {
     // TODO: Delete an employee from the table this.employees.splice()
   }
 }
+
