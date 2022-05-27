@@ -42,6 +42,7 @@ export class ProductsComponent implements OnInit {
       store: this.form.get('store').value
     };
     this.products.push(newProduct);
+    this.products.sort((a, b) => a.price - b.price )  // makes automatically checks price order
     this.initForm();
   }
 }

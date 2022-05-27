@@ -10,7 +10,7 @@ import { EmployeeService } from './employee.service';
 })
 export class EmployeesComponent implements OnInit {
 
- 
+  errorMessage = "";
   form: FormGroup;
   employees: any;
   employee: any;
@@ -33,7 +33,7 @@ export class EmployeesComponent implements OnInit {
   private initForm(): void {
     this.form = this.fb.group({ // TODO: Add validations
       id: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-      name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z_]+( [a-zA-Z_]+)*$/)]],
+      name: ['', [Validators.required, Validators.pattern(/^[a-züõöäA-ZÜÕÖÄ_]+( [a-züõöäA-ZÜÕÖÄ_]+)*$/)]],
       email: ['', [Validators.required, Validators.email]],
       avatar: ['', Validators.required]
     });
@@ -41,7 +41,21 @@ export class EmployeesComponent implements OnInit {
 
 
   addEmployee(): void {
-    console.log(this.form.value)
+    if (this.form.invalid) {
+      // this.errorMessage = "Not all fields are filled";
+      if (this.form.controls.id.status === "INVALID") {   // see INVALID tuli browser consolist
+        this.errorMessage = "ID is invalid";
+      } else if (this.form.controls.name.status === "INVALID") {
+        this.errorMessage = "Name is invalid";
+      } else if (this.form.controls.email.status === "INVALID") {
+        this.errorMessage = "Email is invalid";
+      } else if (this.form.controls.avatar.status === "INVALID") {
+        
+ this.errorMessage = "Avatar is invalid";
+      }
+      return;
+    }
+    this.errorMessage = "";
       const newEmployee = {
       id: this.form.value.id,
       first_name: this.form.value.name.split(" ")[0],
@@ -58,8 +72,13 @@ export class EmployeesComponent implements OnInit {
   deleteEmployee(employee: { id: any; }): void {
     const index = this.employees.findIndex((element: { id: any; }) => element.id === employee.id);
     this.employees.splice(index, 1);
-    this.http.put(this.employeesUrl, this.employees).subscribe();
+    
     // TODO: Delete an employee from the table this.employees.splice()
   }
+
+
+
 }
 
+// kui on üks nupp siis pole sulgudesse miskit vaja
+// kui on erinevas kohas peab kaasa saatma deleteEmployee(employee)
